@@ -1,16 +1,22 @@
 import random
 from datacenter.models import Schoolkid, Mark, Chastisement, Lesson, Commendation
 
+def get_child(schoolkid):
+    kids = Schoolkid.objects.all()
+    child = kids.get(full_name__contains=schoolkid)
+    return child
 
 def fix_marks(schoolkid):
-    child_bad_marks = Mark.objects.filter(schoolkid=schoolkid, points__in=[2, 3])
+    child = get_child(schoolkid)
+    child_bad_marks = Mark.objects.filter(schoolkid=child, points__in=[2, 3])
     for child_bad_mark in child_bad_marks:
         child_bad_mark.points = 5
         child_bad_mark.save()
 
 
 def remove_chastisements(schoolkid):
-    child_chastisements = Chastisement.objects.filter(schoolkid=schoolkid)
+    child = get_child(schoolkid)
+    child_chastisements = Chastisement.objects.filter(schoolkid=child)
     child_chastisements.delete()
 
 
@@ -49,8 +55,7 @@ list_of_accolades = [
 
 
 def create_commendation(schoolkid:str, lesson:str):
-    kids = Schoolkid.objects.all()
-    child = kids.get(full_name__contains=schoolkid)
+    child = get_child(schoolkid)
     all_given_lessons_in_6A = Lesson.objects.filter(year_of_study=6, group_letter='А', subject__title=lesson)
     last_given_lesson = all_given_lessons_in_6A[0]
     Commendation.objects.create(
