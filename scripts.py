@@ -64,7 +64,7 @@ def create_commendation(schoolkid: str, lesson: str, year_of_study: int, group_l
     child = get_child(schoolkid)
     all_given_lessons = Lesson.objects.filter(year_of_study=year_of_study, group_letter=group_letter,
                                               subject__title=lesson)
-    last_given_lesson = all_given_lessons[0]
+    last_given_lesson = all_given_lessons.first()
     Commendation.objects.create(
         text=random.choice(list_of_accolades),
         created=last_given_lesson.date,
