@@ -54,10 +54,10 @@ list_of_accolades = [
 ]
 
 
-def create_commendation(schoolkid:str, lesson:str):
+def create_commendation(schoolkid:str, lesson:str, year_of_study:int, group_letter:str):
     child = get_child(schoolkid)
-    all_given_lessons_in_6A = Lesson.objects.filter(year_of_study=6, group_letter='А', subject__title=lesson)
-    last_given_lesson = all_given_lessons_in_6A[0]
+    all_given_lessons = Lesson.objects.filter(year_of_study=year_of_study, group_letter=group_letter, subject__title=lesson)
+    last_given_lesson = all_given_lessons[0]
     Commendation.objects.create(
         text=random.choice(list_of_accolades),
         created=last_given_lesson.date,
