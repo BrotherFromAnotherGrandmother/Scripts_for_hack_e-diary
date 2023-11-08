@@ -60,8 +60,8 @@ def remove_chastisements(schoolkid):
 def create_commendation(schoolkid: str, lesson: str, year_of_study: int, group_letter: str):
     child = get_child(schoolkid)
     all_given_lessons = Lesson.objects.filter(year_of_study=year_of_study, group_letter=group_letter,
-                                              subject__title=lesson)
-    last_given_lesson = all_given_lessons.first()
+                                              subject__title=lesson).order_by('date', 'timeslot')
+    last_given_lesson = all_given_lessons.last()
     Commendation.objects.create(
         text=random.choice(list_of_accolades),
         created=last_given_lesson.date,
