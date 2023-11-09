@@ -1,7 +1,7 @@
 import random
 from datacenter.models import Schoolkid, Mark, Chastisement, Lesson, Commendation
 
-list_of_accolades = [
+LIST_OF_ACCOLADES = [
     'Молодец!',
     'Отлично!'
     'Хорошо!',
@@ -63,7 +63,7 @@ def create_commendation(schoolkid: str, lesson: str, year_of_study: int, group_l
                                               subject__title=lesson).order_by('date', 'timeslot')
     last_given_lesson = all_given_lessons.last()
     Commendation.objects.create(
-        text=random.choice(list_of_accolades),
+        text=random.choice(LIST_OF_ACCOLADES),
         created=last_given_lesson.date,
         schoolkid=child,
         subject=last_given_lesson.subject,
